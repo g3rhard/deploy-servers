@@ -3,6 +3,28 @@
 
 # Apply common configuration to all hosts
 - hosts: all
+  become: yes
+
+  pre_tasks:
+    - name: Update APT
+      apt:
+        update_cache: yes
+      when: ansible_os_family == 'Debian'
+    - name: Install Dependencies
+      apt:
+        name: "{{ item }}"
+      when: ansible_os_family == 'Debian'
+      with_items:
+        - git
+        # - python-pip
+        # - python-virtualenv
+    - name: Install Dependencies
+      yum:
+        name: "{{ item }}"
+      when: ansible_os_family == 'RedHat'
+      with_items:
+        - git
+        - python-virtualenv
 
   roles:
     - geerlingguy.pip
