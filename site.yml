@@ -6,11 +6,12 @@
   become: yes
 
   pre_tasks:
-    - name: Update APT
+    - name: Update APT for Debian
       apt:
         update_cache: yes
       when: ansible_os_family == 'Debian'
-    - name: Install Dependencies
+
+    - name: Install Dependencies for Debian
       apt:
         name: "{{ item }}"
       when: ansible_os_family == 'Debian'
@@ -18,7 +19,13 @@
         - git
         # - python-pip
         # - python-virtualenv
-    - name: Install Dependencies
+
+    - name: Update Yum for RedHat
+      yum:
+        update_cache: yes
+      when: ansible_os_family == 'Debian'
+
+    - name: Install Dependencies for RedHat
       yum:
         name: "{{ item }}"
       when: ansible_os_family == 'RedHat'
@@ -29,3 +36,5 @@
   roles:
     - geerlingguy.pip
     - geerlingguy.docker
+
+...
