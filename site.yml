@@ -48,7 +48,7 @@
       ansible.builtin.user:
         name: g3rhard
         shell: /bin/bash
-        groups: sudo
+        groups: sudo,docker
         append: yes
 
     - name: Set authorized key for user g3rhard
