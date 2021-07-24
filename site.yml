@@ -44,18 +44,26 @@
     - geerlingguy.docker
 
   tasks:
-    - name: Create portainer container
-      docker_container:
-        name: portainer
-        image: portainer/portainer-ce
-        state: started
-        recreate: yes
-        restart_policy: always
-        published_ports:
-          - "8000:8000"
-          - "9000:9000"
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
-          - portainer_data:/data
+    - name: Add user g3rhard
+      ansible.builtin.user:
+        name: g3rhard
+        shell: /bin/bash
+        groups: sudo
+        append: yes
+
+    - name: Set authorized key for user g3rhard
+      ansible.posix.authorized_key:
+        user: g3rhard
+        state: present
+        key: https://github.com/g3rhard.keys
+
+    - name: Allow 'sudo' group to have passwordless sudo
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^%sudo'
+        line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
 
 ...
