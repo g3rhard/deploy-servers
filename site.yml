@@ -17,6 +17,7 @@
       when: ansible_os_family == 'Debian'
       with_items:
         - git
+        - vim
         # - python-pip
         # - python-virtualenv
 
@@ -30,6 +31,7 @@
         name: "{{ item }}"
       when: ansible_os_family == 'RedHat'
       with_items:
+        - vim
         - git
         - python-virtualenv
 
